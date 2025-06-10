@@ -46,7 +46,7 @@ const Viewrequests = () => {
         } else {
             setIsLoading(false);
         }
-    }, [currentUser]);
+    }, []);
 
     async function handleDelete(event, index) {
         const id = requests[index]._id;

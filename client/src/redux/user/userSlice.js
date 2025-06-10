@@ -65,6 +65,10 @@ const userSlice = createSlice({
     },
     settoken: (state, action) => {
       state.token=action.payload;
+    },
+    authcheck:(state,action) => {
+      state.currentUser=action.payload;
+      
     }
   },
 });
@@ -73,6 +77,7 @@ export const {
   signInStart,
   setiscust,
   settoken,
+  authcheck,
   signInSuccess,
   signInFailure,
   updateUserFailure,

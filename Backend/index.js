@@ -8,6 +8,7 @@ import userRouter from './routers/userRouter.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
 import jwt from 'jsonwebtoken';
+import { errorHandler } from './utils/error.js';
 import Customer from './models/customer.model.js';
 import Dealer from './models/dealer.model.js';
 import nodemailer from 'nodemailer';
@@ -206,6 +207,36 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
+
+app.get('/api/checkauth',async(req,res)=>{
+   const token = req.cookies.access_token;
+  
+    if (!token) return res.status(401).send('Unauthorized');
+  var data=null;
+    jwt.verify(token, process.env.JWT_SECRET, async(err, user) => {
+      if (err) return res.status(403).send('Forbidden');
+    
+      const c=await Customer.findById(user.id).select('-password');
+      const d=await Dealer.findById(user.id).select('-password');
+     
+      if(c){
+        console.log(c);
+        return res.status(200).json(c);
+      }
+      else if(d){
+        return res.status(200).json(d);
+      }
+      
+      else{
+        return res.json(errorHandler(404, 'Unauthorized'));
+      }
+    
+     
+    });
+    
+   
+    
+})
 app.listen(process.env.PORT,()=>{
    
     console.log("server is running");
