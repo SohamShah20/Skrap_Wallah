@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {updatereq,request,getacceptedrequests,getrequests,getdealer,payreceived,republish, feedback,getclosedrequests,getbill,deletereq,getDealerFromRequest,getscraps} from '../controllers/customerController.js';
+import {updatereq,request,getacceptedrequests,getrequests,getdealer,payreceived, feedback,getclosedrequests,getbill,deletereq,getDealerFromRequest,getscraps} from '../controllers/customerController.js';
 
 import express from "express";
 import { verifyToken } from "../utils/Verifyuser.js";
@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/request',verifyToken,request);
 router.put('/payreceived/:id',verifyToken,payreceived);
-router.put('/republish/:id',verifyToken,republish);
+
 router.get('/getrequests/:id',getrequests);
 router.get('/getdealer/:id',getdealer);
 router.get('/getacceptedrequests/:id',getacceptedrequests);
