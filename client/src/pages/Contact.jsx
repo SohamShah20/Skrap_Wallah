@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -10,7 +10,7 @@ const Contact = () => {
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+ const navigate=useNavigate();
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -21,13 +21,27 @@ const Contact = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setLoading(true);
+   
+    
     try {
-      console.log(formData);  // Replace with actual form submission logic
+      setLoading(true);
+    const res = await fetch('http://localhost:3001/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+       
+      },
+      credentials: 'include', 
+      body: JSON.stringify(formData),
+    });
+    const data = await res.json();
       setLoading(false);
+       navigate('/');
+      return;
     } catch (err) {
       setLoading(false);
       setError('Something went wrong. Please try again.');
+      return;
     }
   };
 
@@ -44,6 +58,9 @@ const Contact = () => {
                 type="text"
                 name="name"
                 id="name"
+                required
+                minLength={4}
+                maxLength={15}
                 placeholder="Enter your name"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-400 focus:outline-none transition duration-150 shadow-md"
                 onChange={changeHandler}
@@ -56,6 +73,7 @@ const Contact = () => {
                 type="email"
                 name="email"
                 id="email"
+                required
                 placeholder="Enter your email"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-400 focus:outline-none transition duration-150 shadow-md"
                 onChange={changeHandler}
@@ -65,9 +83,12 @@ const Contact = () => {
             <div className="space-y-2">
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
               <input
-                type="tel"
+                type="text"
                 name="phone"
                 id="phone"
+                required
+                minLength={10}
+                maxLength={10}
                 placeholder="Enter your phone number"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-400 focus:outline-none transition duration-150 shadow-md"
                 onChange={changeHandler}
@@ -79,7 +100,10 @@ const Contact = () => {
               <textarea
                 name="message"
                 id="message"
+                minLength={14}
+                maxLength={300}
                 placeholder="Enter your message"
+                required
                 className="w-full px-4 py-1 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-400 focus:outline-none transition duration-150 shadow-md h-32"
                 onChange={changeHandler}
               />

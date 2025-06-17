@@ -9,9 +9,9 @@ const Acceptedreq = () => {
   const [loading, setLoading] = useState(true); // Loading state for spinner
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
+
   const navigate = useNavigate();
 
-  useEffect(() => {
     const fetchRequests = async () => {
       setLoading(true); // Start spinner
       try {
@@ -27,6 +27,11 @@ const Acceptedreq = () => {
       setLoading(false); // Stop spinner
     };
 
+ 
+
+
+  useEffect(() => {
+ 
     if (currentUser) {
       fetchRequests();
     }
@@ -50,6 +55,7 @@ const Acceptedreq = () => {
         setError(data.message);
         return;
       }
+     await fetchRequests();
       setMessage("Generated");
       return;
     } catch (error) {

@@ -6,6 +6,7 @@ import Bill from '../models/bill.model.js';
 import Scrap from '../models/scrap.model.js';
 export async function request(req,res,next){
     const {city,custname,date,time,email,scrapData}=req.body;
+    
    const times=time.toString();
     const dates=date.toString();
     const newcust = new Request({city,custname,date:dates,time:times,email,scrapData});
@@ -24,7 +25,7 @@ export async function updatereq(req,res,next){
   const id=req.params.id;
  
   try {
-    const newcust = await Request.findByIdAndUpdate(id,{city,custname,date:dates,time:times,email,scrapData},{new:true});
+    const newcust = await Request.findByIdAndUpdate(id,{city,custname,date:dates,time:times,email,scrapData,status:"PENDING"},{new:true});
       res.status(201).json('request updated successfully!');
     } catch (error) {
       next(error);
@@ -115,6 +116,7 @@ export async function getrequests(req,res,next){
               return res.status(404).json(error);
           }
           }
+
 
           export async function getclosedrequests(req,res,next){
             const id=req.params.id;

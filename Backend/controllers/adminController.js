@@ -8,15 +8,15 @@ import Customer from '../models/customer.model.js';
 dotenv.config();
 export async function createdealer(req,res,next){
     
-    const {username, email, password,address,city} =req.body;
+    const {username, email, password,address,city,phone} =req.body;
     const hashedPassword = bcryptjs.hashSync(password, 10);
     const validUser = await Dealer.findOne({ email });
     const validUser2 = await Customer.findOne({ email });
     if (validUser || validUser2) return res.status(404).send('Dealer exists!');
     const validUser1 = await Dealer.findOne({ username });
-    const validUser3 = await Customer.findOne({ username });
+    const validUser3 = await Customer.findOne({ username }); 
     if (validUser1 || validUser3) return res.status(404).send('Dealer exists!');
-    const newcust = new Dealer({ username, email, password: hashedPassword,address,city });
+    const newcust = new Dealer({ username, email, password: hashedPassword,address,city ,phone});
   try {
     await newcust.save();
     res.status(201).json('Dealer created successfully!');

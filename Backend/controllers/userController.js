@@ -16,7 +16,7 @@ if(d){
    
      
 Dealer.findByIdAndUpdate(id, {username, email, address,city,avatar,phone},{ new: true })
-                .then(u => res.status(200).json(u))
+                .then(u => { const { password: pass, ...rest } = u._doc;res.status(200).json(rest)})
                 .catch(err => res.send({Status: err}))
         
        
@@ -26,7 +26,7 @@ Dealer.findByIdAndUpdate(id, {username, email, address,city,avatar,phone},{ new:
 else{
   
       Customer.findByIdAndUpdate(id,{username, email, address,city,avatar,phone},{ new: true })
-        .then(u => res.status(200).json(u))
+        .then(u => { const { password: pass, ...rest } = u._doc;res.status(200).json(rest)})
         .catch(err => res.send({Status: err}))
     }
 

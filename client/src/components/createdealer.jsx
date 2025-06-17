@@ -33,8 +33,11 @@ const Createdealer = () => {
     try {
       const res = await fetch('http://localhost:3001/api/admin/createdealer', {
         method: 'POST',
-        credentials: 'include',
-        body: data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
       });
       const result = await res.json();
       if (result.success === false) {
@@ -66,6 +69,8 @@ const Createdealer = () => {
             <input
               type="text"
               name="username"
+              maxLength={15}
+              minLength={4}
               placeholder="Username"
               onChange={changeHandler}
               className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-500"
@@ -78,6 +83,19 @@ const Createdealer = () => {
               type="email"
               name="email"
               placeholder="Email"
+              onChange={changeHandler}
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-600 font-medium">Phone</label>
+            <input
+              type="number"
+              name="phone"
+              max={9999999999}
+              min={1000000000}
+              placeholder="Phone"
               onChange={changeHandler}
               className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-500"
               required
@@ -100,6 +118,8 @@ const Createdealer = () => {
               type="password"
               name="password"
               placeholder="Password"
+              maxLength={15}
+              minLength={4}
               onChange={changeHandler}
               className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-500"
               required
@@ -116,16 +136,7 @@ const Createdealer = () => {
               required
             />
           </div>
-          <div>
-            <label className="block text-gray-600 font-medium">Profile Image</label>
-            <input
-              type="file"
-              name="image"
-              onChange={imageChangeHandler}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-500"
-              accept="image/*"
-            />
-          </div>
+          
           <button
             type="submit"
             disabled={loading}

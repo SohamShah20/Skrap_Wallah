@@ -12,10 +12,13 @@ export const signup = async (req, res, next) => {
 
     const hashedPassword = bcryptjs.hashSync(password, 10);
   
+    const validUser4 = await Customer.findOne({ phone });
+    const validUser5 = await Dealer.findOne({ phone });
+    if (validUser4 || validUser5) return res.status(404).send('phone number exists!');
  
     const validUser = await Customer.findOne({ email });
     const validUser2 = await Dealer.findOne({ email });
-    if (validUser || validUser2) return res.status(404).send('User exists!');
+    if (validUser || validUser2) return res.status(404).send('eamil exists!');
     const validUser1 = await Customer.findOne({ username });
     const validUser3 = await Dealer.findOne({ username });
     if (validUser1 || validUser3) return res.status(404).send('User exists!');

@@ -191,6 +191,8 @@ const handleFileUpload = (file) => {
                 type="text"
                 name="username"
                 required
+                maxLength={15}
+                minLength={4}
                 value={formData.username}
                 onChange={handleInputChange}
                 placeholder="Enter your name"
@@ -227,8 +229,10 @@ const handleFileUpload = (file) => {
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Phone</label>
               <input
-                type="text"
+                type="number"
                 name="phone"
+                max={9999999999}
+                min={1000000000}
                 required
                 value={formData.phone}
                 onChange={handleInputChange}
@@ -303,6 +307,8 @@ const handleFileUpload = (file) => {
                 type="password"
                 name="newPassword"
                 required
+                maxLength={15}
+                minLength={4}
                 onChange={handlepasswordChange}
                 placeholder="Enter new password"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -315,6 +321,8 @@ const handleFileUpload = (file) => {
                 type="password"
                 name="confirmPassword"
                 required
+                maxLength={15}
+                minLength={4}
                 onChange={handlepasswordChange}
                 placeholder="Confirm new password"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"

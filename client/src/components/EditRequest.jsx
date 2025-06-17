@@ -69,7 +69,21 @@ const EditRequest = (props) => {
       formData.city = currentUser.city;
       formData.custname = currentUser.username;
       formData.email = currentUser.email;
-  
+   
+      const now = new Date();
+const currentTime = now.toTimeString().slice(0, 5); 
+   
+if(new Date(formData.date).getDate()<new Date(Date.now()).getDate()){
+  setMessage("Please select a future date.");
+  setIsLoading(false);
+  return;
+}
+
+if (new Date(formData.date).getDate()===new Date(Date.now()).getDate() &&formData.time < currentTime) {
+  setMessage("Please select a future time.");
+  setIsLoading(false);
+  return;
+}
       try {
         const res = await fetch(`http://localhost:3001/api/customer/updatereq/${id}`, {
           method: 'POST',
@@ -122,6 +136,8 @@ const EditRequest = (props) => {
                 name="quantity"
                 value={scrap.quantity}
                 required
+                max={100}
+                min={1}
                 onChange={(event) => handleScrapChange(event, index)}
                 placeholder="Quantity"
                 className="border rounded-lg p-3 flex-1 focus:ring-2 focus:ring-blue-300 shadow-sm hover:shadow-md transition duration-200"
@@ -153,6 +169,7 @@ const EditRequest = (props) => {
             type="date"
             name="date"
             required
+           
             onChange={handleChange}
             className="border rounded-lg p-3 w-full mt-2 focus:ring-2 focus:ring-blue-300 shadow-sm hover:shadow-md transition duration-200"
           />
