@@ -16,7 +16,6 @@ function ForgotPassword() {
         .then(res => {
             if(res.data.Status === "Success") {
                 navigate('/login')
-               
             }
         }).catch(err => console.log(err))
     }

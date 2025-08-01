@@ -39,7 +39,6 @@ app.use('/api/admin',adminRouter);
 app.use('/api',userRouter);
 app.post('/forgot-password',async (req, res) => {
     const {email, isDealer} = req.body;
-
     if(isDealer){
         Dealer.findOne({email: email})
         .then(user => {
