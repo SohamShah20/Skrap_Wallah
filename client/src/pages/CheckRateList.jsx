@@ -13,7 +13,12 @@ const CheckRateList = () => {
     useEffect(()=>{
         const fetchScraps = async () => {
           try{
-            const res = await fetch(`http://localhost:3001/api/customer/getscraps`);
+            const res = await fetch(`http://localhost:3001/api/customer/getscraps`,
+              {
+                        method:"GET",
+                        credentials:"include"
+                    }
+            );
             const data = await res.json();
             setScraps(data);
           }catch(error){

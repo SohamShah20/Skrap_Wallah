@@ -4,7 +4,7 @@ import { verifyToken } from "../utils/Verifyuser.js";
 import { resetpass,updateuser } from "../controllers/userController.js";
 const router = express.Router();
 
-router.post('/resetpass/:id',resetpass);
-router.post('/updateuser/:id',updateuser);
+router.post('/resetpass/:id',verifyToken,resetpass);
+router.post('/updateuser/:id',verifyToken,updateuser);
 
 export default router;

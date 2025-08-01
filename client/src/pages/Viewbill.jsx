@@ -17,7 +17,11 @@ const Viewbill = () => {
     const fetchBillDetails = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3001/api/customer/getbill/${req_id}`
+          `http://localhost:3001/api/customer/getbill/${req_id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
         );
         const data = await res.json();
         setDetails(data.scrapdata);

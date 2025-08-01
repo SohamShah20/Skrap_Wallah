@@ -16,7 +16,12 @@ const Request = () => {
   useEffect(()=>{
     const fetchScraps = async () => {
       try{
-        const res = await fetch(`http://localhost:3001/api/customer/getscraps`);
+        const res = await fetch(`http://localhost:3001/api/customer/getscraps`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
+        );
         const data = await res.json();
         setScraps(data);
       }catch(error){
@@ -68,21 +73,18 @@ const Request = () => {
     formData.custname = currentUser.username;
     formData.email = currentUser.email;
 
-    const now = new Date();
-const currentTime = now.toTimeString().slice(0, 5); 
-   
-   
-    if(new Date(formData.date).getDate()<new Date(Date.now()).getDate()){
-      setMessage("Please select a future date.");
-      setIsLoading(false);
-      return;
-    }
-  
-    if (new Date(formData.date).getDate()===new Date(Date.now()).getDate() &&formData.time < currentTime) {
-      setMessage("Please select a future time.");
-      setIsLoading(false);
-      return;
-    }
+    
+
+
+const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
+const now = new Date();
+
+if (selectedDateTime <= now) {
+  setMessage("Please select a future date and time.");
+  setIsLoading(false);
+  return;
+}
+
     try {
       const res = await fetch('http://localhost:3001/api/customer/request', {
         method: 'POST',

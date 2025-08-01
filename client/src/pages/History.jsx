@@ -17,7 +17,11 @@ const History = (props) => {
       setLoading(true); // Start spinner
       try {
         const res = await fetch(
-          `http://localhost:3001/api/dealer/getclosedrequests/${currentUser._id}`
+          `http://localhost:3001/api/dealer/getclosedrequests/${currentUser._id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
         );
         const data = await res.json();
         setRequests(data);

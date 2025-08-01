@@ -15,11 +15,12 @@ const ProfilePage = () => {
   const dispatch=useDispatch();
 
   const navigate=useNavigate();
-  const [view, setView] = useState("profile"); // To toggle between views
+  const [view, setView] = useState("profile"); 
   const { currentUser,iscust} = useSelector((state) => state.user);
   const [file,setFile]=useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [error,seterror]=useState(null);
+
 const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({
 
@@ -28,7 +29,7 @@ const [fileUploadError, setFileUploadError] = useState(false);
     phone: currentUser.phone,
     email: currentUser.email,
     avatar: currentUser.avatar, 
-
+   
 
     city:currentUser.city
 
@@ -81,6 +82,8 @@ const handleFileUpload = (file) => {
   };
   const handleFormSubmit = async(e) => {
     e.preventDefault();
+    formData.iscust=iscust;
+    console.log(formData.iscust);
     try{
       const res = await fetch(`http://localhost:3001/api/updateuser/${currentUser._id}`, {
        method: 'POST',
@@ -108,6 +111,7 @@ const handleFileUpload = (file) => {
   const handlePasswordSubmit =async (e) => {
     e.preventDefault();
     console.log(passwordform);
+    passwordform.iscust=iscust;
     if(passwordform.newPassword!==passwordform.confirmPassword){
       seterror("password not match");
       return;
@@ -260,7 +264,7 @@ const handleFileUpload = (file) => {
                 type="file"
                 name="avatar"
                 accept='image/*'
-                required
+                
                 onChange={(e) => setFile(e.target.files[0])}
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
@@ -279,9 +283,10 @@ const handleFileUpload = (file) => {
         </p>
             </div>
 
-            <button
+           <button
               type="submit"
               className="w-full py-2 mt-4 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600"
+              
             >
               Save Changes
             </button>

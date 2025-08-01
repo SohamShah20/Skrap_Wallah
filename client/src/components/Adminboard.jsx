@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { setiscust } from '../redux/user/userSlice';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Scrapdealer from './Scrapdealer';
 const Adminboard = () => {
   const { currentUser, iscust } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -15,17 +15,11 @@ const Adminboard = () => {
   return (
     <div>
       <ToastContainer />
+      
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-green-100 to-white p-6 md:p-10 flex flex-col items-center">
         {/* Header */}
-        <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg mb-8 md:mb-5 w-full max-w-3xl text-center border-b-4 border-green-500">
-          <h1 className="text-2xl md:text-3xl font-semibold text-gray-850">
-            Welcome, <span className="text-green-600">{currentUser.username}</span>!
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Manage your scrap business with ease. Select an option to proceed.
-          </p>
-        </div>
-
+       
+       
         {/* Admin Features Section */}
         <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 max-w-3xl w-full">
           {/* Card Template for Admin Features */}
