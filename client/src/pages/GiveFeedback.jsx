@@ -17,7 +17,12 @@ const GiveFeedback = () => {
   useEffect(() => {
     const fetchDealer = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/api/customer/getDealerFromRequest/${req_id}`);
+        const res = await fetch(`http://localhost:3001/api/customer/getDealerFromRequest/${req_id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
+        );
         const data = await res.json();
         setDealer(data);
       } catch (error) {

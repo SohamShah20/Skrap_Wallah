@@ -6,12 +6,14 @@ import Bill from '../models/bill.model.js';
 import Scrap from '../models/scrap.model.js';
 export async function request(req,res,next){
     const {city,custname,date,time,email,scrapData}=req.body;
-    
+   const city1=city.toUpperCase();
    const times=time.toString();
     const dates=date.toString();
-    const newcust = new Request({city,custname,date:dates,time:times,email,scrapData});
+    const u=Customer.findById(req.user.id);
+    if(!u)return res.status(400).json('you are not a customer!');
+    const newreq = new Request({city:city1,custname,date:dates,time:times,email,scrapData});
     try {
-        await newcust.save();
+        await newreq.save();
         res.status(201).json('request made successfully!');
       } catch (error) {
         next(error);
@@ -23,20 +25,26 @@ export async function updatereq(req,res,next){
  const times=time.toString();
   const dates=date.toString();
   const id=req.params.id;
+  const r=await Request.findById(id);
+ const u=await Customer.findById(req.user.id);
+  const city1=city.toUpperCase();
  
+    if(!u)return res.status(400).json('you are not a customer!');
+  if(r.custname!=u.username)res.status(400).json('please update your request only!');
   try {
-    const newcust = await Request.findByIdAndUpdate(id,{city,custname,date:dates,time:times,email,scrapData,status:"PENDING"},{new:true});
+    const newcust = await Request.findByIdAndUpdate(id,{city:city1,custname,date:dates,time:times,email,scrapData,status:"PENDING"},{new:true});
       res.status(201).json('request updated successfully!');
     } catch (error) {
       next(error);
     }
 }
 export async function getrequests(req,res,next){
-  const id=req.params.id;
-  const dealer= await Customer.findById(id);
+  const id=req.user.id;
+  const cust= await Customer.findById(id);
   
+    if(!cust)return res.status(400).json('you are not a customer!');
   try
-  {const requests=await Request.find({status:"PENDING",email:dealer.email});
+  {const requests=await Request.find({status:"PENDING",email:cust.email});
   return res.status(200).json(requests);}
   catch(error){
       return res.status(404).json(error);
@@ -44,11 +52,11 @@ export async function getrequests(req,res,next){
   }
   
   export async function getacceptedrequests(req,res,next){
-      const id=req.params.id;
-      const dealer= await Customer.findById(id);
-      
+      const id=req.user.id;
+      const cust= await Customer.findById(id);
+      if(!cust)return res.status(400).json('you are not a customer!');
       try
-      {const requests=await Request.find({status:"ACCEPTED",email:dealer.email});
+      {const requests=await Request.find({status:"ACCEPTED",email:cust.email});
       return res.status(200).json(requests);}
       catch(error){
           return res.status(404).json(error);
@@ -107,7 +115,12 @@ export async function getrequests(req,res,next){
 
         export async function payreceived(req,res,next){
           const id=req.params.id;
-         
+         const r=await Request.findById(id);
+ const u=await Customer.findOne({username:r.custname});
+const u1=await Customer.findById(req.user.id);
+  if(!u1)return res.status(400).json('you are not a customer!');
+
+  if(u.username!=u1.username)res.status(400).json('please validate your request only!');
           
           try
           { const dealer= await Request.findByIdAndUpdate(id,{cangenreceipt:true});
@@ -119,9 +132,9 @@ export async function getrequests(req,res,next){
 
 
           export async function getclosedrequests(req,res,next){
-            const id=req.params.id;
+            const id=req.user.id;
             const customer= await Customer.findById(id);
-            
+            if(!customer)return res.status(400).json('you are not a customer!');
             try
             {const requests=await Request.find({status:"CLOSED",email:customer.email});
             return res.status(200).json(requests);}
@@ -133,7 +146,14 @@ export async function getrequests(req,res,next){
             export async function getbill(req,res,next){
               const id=req.params.id;
              
-              
+              const r=await Request.findById(id);
+ const u=await Customer.findOne({username:r.custname});
+ 
+const u1=await Customer.findById(req.user.id);
+const d=await Dealer.findById(req.user.id);
+
+  if(u1 && u.username!=u1.username)res.status(400).json('please check your bill only!');
+  if(d && d._id!=r.dealer_id)res.status(400).json('please check your bill only!');
               try
               { const dealer= await Bill.findOne({req_id:id});
               return res.status(200).json(dealer);}
@@ -147,7 +167,11 @@ export async function getrequests(req,res,next){
               export async function deletereq(req,res,next){
                 const id=req.params.id;
                
-                
+                 const r=await Request.findById(id);
+ const u=await Customer.findOne({username:r.custname});
+const u1=await Customer.findById(req.user.id);
+if(!u1)return res.status(400).json('you are not a customer!');
+  if(u.username!=u1.username)res.status(400).json('please delete your request only!');
                 try
                 { const request= await Request.findByIdAndDelete(id);
                 return res.status(200).json('deleted');}

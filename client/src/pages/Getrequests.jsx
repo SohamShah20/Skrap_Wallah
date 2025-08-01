@@ -18,7 +18,11 @@ const GetRequests = () => {
       setLoading(true); // Show spinner at the start of the fetch
       try {
         const res = await fetch(
-          `http://localhost:3001/api/dealer/getrequests/${currentUser._id}`
+          `http://localhost:3001/api/dealer/getrequests/${currentUser._id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
         );
         const data = await res.json();
         setRequests(data);

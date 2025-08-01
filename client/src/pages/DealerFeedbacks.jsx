@@ -13,7 +13,11 @@ const DealerFeedbacks = () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:3001/api/dealer/getfeedbacks/${currentUser._id}`
+          `http://localhost:3001/api/dealer/getfeedbacks/${currentUser._id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
         );
         const data = await res.json();
         setFeedbacks(data);

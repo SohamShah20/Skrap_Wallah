@@ -17,7 +17,12 @@ const ViewAcceptedRequests = (props) => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/api/customer/getacceptedrequests/${currentUser._id}`);
+        const res = await fetch(`http://localhost:3001/api/customer/getacceptedrequests/${currentUser._id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
+        );
         const data = await res.json();
         setRequests(data);
       } catch (error) {
@@ -50,9 +55,8 @@ const ViewAcceptedRequests = (props) => {
         return;
       }
 
-      // Filter out the received request
-      const updatedRequests = requests.filter((_, i) => i !== index);
-      setRequests(updatedRequests);
+   
+     
 
       // Show success toast
       toast.success("Marked as Received");
@@ -112,12 +116,12 @@ const ViewAcceptedRequests = (props) => {
                         Received
                       </button>
                     )}
-                     <Link
+                     {!request.cangenreceipt &&(<Link
                           to={`/editreq/${id1}`}
                            className="bg-blue-500 text-white px-4 py-2 mt-2 rounded inline-block text-center hover:bg-blue-600 transform hover:scale-105 transition duration-200 w-full"
                             >
                             Republish
-                          </Link>
+                          </Link>)}
                       
                   </div>
                 </div>

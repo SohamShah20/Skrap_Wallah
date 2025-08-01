@@ -15,7 +15,12 @@ const Viewdealer = () => {
   useEffect(() => {
     const fetchDealer = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/api/customer/getdealer/${id}`);
+        const res = await fetch(`http://localhost:3001/api/customer/getdealer/${id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
+        );
         const data = await res.json();
         setDealer(data);
       } catch (error) {
@@ -40,7 +45,12 @@ const Viewdealer = () => {
 
     const adminHandler = async(event)=>{
         try{
-            const res=await fetch(`http://localhost:3001/api/admin/dealeradmin/${id}`);
+            const res=await fetch(`http://localhost:3001/api/admin/dealeradmin/${id}`,
+              {
+                        method:"GET",
+                        credentials:"include"
+                    }
+            );
             const data = await res.json();
             navigate(-1);
         }catch(error){

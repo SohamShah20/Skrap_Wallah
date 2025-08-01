@@ -21,7 +21,12 @@ const DealerList = () => {
     useEffect(() => {
         const fetchDealers = async () => {
             try {
-                const res = await fetch(`http://localhost:3001/api/admin/getdealers/`);
+                const res = await fetch(`http://localhost:3001/api/admin/getdealers/`,
+                    {
+                        method:"GET",
+                        credentials:"include"
+                    }
+                );
                 const data = await res.json();
                 setDealers(data);
                 setLoading(false);

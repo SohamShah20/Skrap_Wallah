@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { resetFirstLogin } from "../redux/user/userSlice";
 import "react-toastify/dist/ReactToastify.css";
+import Adminboard from "./Adminboard";
 
 
 
@@ -30,6 +31,7 @@ const Scrapdealer = () => {
     
     <div>
     <ToastContainer/>
+    
     <div className="min-h-screen bg-gradient-to-bl from-green-50 via-green-100 to-white p-6 md:p-10 flex flex-col items-center">
       {/* Header */}
       <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg mb-8 md:mb-10 w-full max-w-3xl text-center border-b-4 border-green-500">
@@ -87,7 +89,7 @@ const Scrapdealer = () => {
           </Link>
         ))}
       </div>
-
+   {currentUser.isadmin? <Adminboard/>:<></>}
     </div>
 </div>
   );

@@ -86,22 +86,22 @@ function App() {
         <Route path = "/signup" element = {!currentUser?<Signup/>:<Dashboard/>} />
         <Route path = "/logout" element = {<Logout />} />
         <Route path = "/createdealer" element = {(currentUser && currentUser.isadmin)?<Createdealer />:<Navigate to="/"/>} />
-        <Route path = "/getrequests" element = {(currentUser && !iscust  && !currentUser.isadmin)?<Getrequests />:<Navigate to="/"/>} />
-        <Route path = "/getacceptedrequests" element = {(currentUser && !iscust  && !currentUser.isadmin)?<Acceptedreq />:<Navigate to="/"/>} />
-        <Route path = "/gethistory" element = {(currentUser && !currentUser.isadmin)?<History />:<Home/>} />
-        <Route path = "/history" element = {(currentUser && !currentUser.isadmin)?<RequestHistory />:<Home/>} />
+        <Route path = "/getrequests" element = {(currentUser && !iscust )?<Getrequests />:<Navigate to="/"/>} />
+        <Route path = "/getacceptedrequests" element = {(currentUser && !iscust )?<Acceptedreq />:<Navigate to="/"/>} />
+        <Route path = "/gethistory" element = {(currentUser )?<History />:<Home/>} />
+        <Route path = "/history" element = {(currentUser )?<RequestHistory />:<Home/>} />
         <Route path = "/request" element = {(currentUser && iscust)?<Request />:<Navigate to="/"/>} />
         <Route path = "/viewrequests" element = {(currentUser && iscust)?<Viewrequests />:<Navigate to="/"/>} />
         <Route path = "/viewacceptedrequests" element = {(currentUser && iscust)?<Viewacceptedrequests/>:<Navigate to="/"/>} />
-        <Route path = "/viewdealer/:id" element = {(currentUser &&(iscust && currentUser.isadmin))?<Viewdealer />:<Navigate to="/"/>} />
-        <Route path = "/viewbill/:req_id" element = {(currentUser && !currentUser.isadmin)?<Viewbill />:<Navigate to="/"/>} />
+        <Route path = "/viewdealer/:id" element = {(currentUser )?<Viewdealer />:<Navigate to="/"/>} />
+        <Route path = "/viewbill/:req_id" element = {(currentUser )?<Viewbill />:<Navigate to="/"/>} />
         <Route path = "/setprice" element = {(currentUser && currentUser.isadmin)?<SetPrice />:<Navigate to="/"/>} />
         <Route path = "/editreq/:id" element = {(currentUser && iscust)?<EditRequest />:<Navigate to="/"/>} />
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/reset_password/:id/:token" element={<ResetPassword />}></Route>
 
         <Route path = "/givefeedback/:req_id" element = {(currentUser && iscust)?<GiveFeedback />:<Navigate to="/"/>} />
-        <Route path = "/viewdealerfeedback" element = {(currentUser && !iscust && !currentUser.isadmin)?<DealerFeedbacks />:<Navigate to="/"/>} />
+        <Route path = "/viewdealerfeedback" element = {(currentUser && !iscust )?<DealerFeedbacks />:<Navigate to="/"/>} />
                   <Route path="/contact" element={<Contact />} />
         <Route path="/profilepage" element={currentUser?<ProfilePage />:<Home/>} />
         <Route path="/dealerlist" element={(currentUser && currentUser.isadmin)?<DealerList />:<Navigate to="/"/>} />

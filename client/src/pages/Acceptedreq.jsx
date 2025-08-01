@@ -16,7 +16,11 @@ const Acceptedreq = () => {
       setLoading(true); // Start spinner
       try {
         const res = await fetch(
-          `http://localhost:3001/api/dealer/getacceptedrequests/${currentUser._id}`
+          `http://localhost:3001/api/dealer/getacceptedrequests/${currentUser._id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
         );
         const data = await res.json();
         setRequests(data);
@@ -55,8 +59,11 @@ const Acceptedreq = () => {
         setError(data.message);
         return;
       }
-     await fetchRequests();
+     
       setMessage("Generated");
+       const updatedRequests = requests.filter((_, i) => i !== index);
+      setRequests(updatedRequests);
+     navigate("/getacceptedrequests");
       return;
     } catch (error) {
       setError("Failed to generate receipt. Please try again.");

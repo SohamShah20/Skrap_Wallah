@@ -15,8 +15,7 @@ const Dashboard = () => {
     
     <div>
 
-      {currentUser.isadmin?<Adminboard/>:<div> {iscust?<Cust/>
-       :<Scrapdealer/>}</div>}
+      {iscust?<Cust/>:<Scrapdealer/>}
        
 
         
