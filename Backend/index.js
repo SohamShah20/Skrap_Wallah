@@ -39,15 +39,12 @@ app.use('/api/customer',customerRouter);
 app.use('/api/admin',adminRouter);
 app.use('/api',userRouter);
 app.post('/forgot-password',async (req, res) => {
-    const {email} = req.body;
-    const d= await Dealer.findOne({email});
-  
-   
-    if(d){
+    const {email, isDealer} = req.body;
+    if(isDealer){
         Dealer.findOne({email: email})
         .then(user => {
             if(!user) {
-                return res.send({Status: "User not existed"})
+                return res.send({Status: "Dealer does not exist!"})
             } 
             const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: "1d"})
             var transporter = nodemailer.createTransport({
@@ -78,7 +75,7 @@ app.post('/forgot-password',async (req, res) => {
         Customer.findOne({email: email})
         .then(user => {
             if(!user) {
-                return res.send({Status: "User not existed"})
+                return res.send({Status: "Customer does not exist!"})
             } 
             const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: "1d"})
             var transporter = nodemailer.createTransport({
