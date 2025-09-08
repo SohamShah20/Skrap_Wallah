@@ -13,7 +13,11 @@ const DealerFeedbacks = () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:3001/api/dealer/getfeedbacks/${currentUser._id}`
+          `http://localhost:3001/api/dealer/getfeedbacks/${currentUser._id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
         );
         const data = await res.json();
         setFeedbacks(data);
@@ -72,10 +76,10 @@ const DealerFeedbacks = () => {
                 <p className="text-gray-600 mt-2 mb-4">
                   <strong>Rating Provided:</strong> {feedback.rating}
                 </p>
-                {feedback.comment && (
+                {feedback.description && (
                   <div className="p-4 bg-gray-100 rounded-lg mt-4">
                     <p className="text-gray-700">
-                      <strong>Customer Comment:</strong> {feedback.comment}
+                      <strong>Customer Comment:</strong> {feedback.description}
                     </p>
                   </div>
                 )}

@@ -4,11 +4,11 @@ import Bill from"../models/bill.model.js";
 import Scrap from "../models/scrap.model.js";
 import Feedback from "../models/feedback.model.js";
 export async function getrequests(req,res,next){
-const id=req.params.id;
+const id=req.user.id;
 const dealer= await Dealer.findById(id);
-
+if(!dealer)return res.status(400).json('you are not a dealer');
 try
-{const requests=await Request.find({city:dealer.city,status:"PENDING"});
+{const requests=await Request.find({status:"PENDING",city:dealer.city});
 return res.status(200).json(requests);}
 catch(error){
     return res.status(404).json(error);
@@ -16,11 +16,11 @@ catch(error){
 }
 
 export async function getacceptedrequests(req,res,next){
-    const id=req.params.id;
+    const id=req.user.id;
     const dealer= await Dealer.findById(id);
-    
+    if(!dealer)return res.status(400).json('you are not a dealer');
     try
-    {const requests=await Request.find({city:dealer.city,status:"ACCEPTED",dealer_id:id});
+    {const requests=await Request.find({status:"ACCEPTED",dealer_id:id});
     return res.status(200).json(requests);}
     catch(error){
         return res.status(404).json(error);
@@ -28,8 +28,11 @@ export async function getacceptedrequests(req,res,next){
     }
 export async function acceptrequests(req,res,next){
     const id=req.params.id;
+    const id1=req.user.id;
    
-    
+    const dealer= await Dealer.findById(id1);
+    if(!dealer)return res.status(400).json('you are not a dealer');
+   
    try{  await Request.findByIdAndUpdate(id,{status:"ACCEPTED",dealer_id:req.user.id});
    console.log("ho gya kaam!!!!")
         return res.status(201).json('ACCEPTED');
@@ -47,7 +50,11 @@ catch(error){
 export async function genreceipt(req, res, next) {
   const id = req.params.id;
   const request = await Request.findById(id);
-
+ const id1=req.user.id;
+    
+    const d= await Dealer.findById(id1);
+    if(!d)return res.status(400).json('you are not a dealer');
+    if(id1!=request.dealer_id)return res.status(400).json('please generate receipt of your request only');
   if (!request) {
       return res.status(404).send('Request not found');
   }
@@ -106,11 +113,11 @@ export async function genreceipt(req, res, next) {
 }
 
 export async function getclosedrequests(req,res,next){
-  const id=req.params.id;
+  const id=req.user.id;
   const dealer= await Dealer.findById(id);
-  
+  if(!dealer)return res.status(400).json('you are not a dealer');
   try
-  {const requests=await Request.find({city:dealer.city,status:"CLOSED",dealer_id:id});
+  {const requests=await Request.find({status:"CLOSED",dealer_id:id});
   return res.status(200).json(requests);}
   catch(error){
       return res.status(404).json(error);
@@ -118,7 +125,9 @@ export async function getclosedrequests(req,res,next){
   }
 
 export async function getfeedbacks(req,res,next){
-    const id = req.params.id;
+    const id = req.user.id;
+    const dealer= await Dealer.findById(id);
+  if(!dealer)return res.status(400).json('you are not a dealer');
     try{
         const feedbacks=await Feedback.find({dealer:id});
         return res.status(200).json(feedbacks);

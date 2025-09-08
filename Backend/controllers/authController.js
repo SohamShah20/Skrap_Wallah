@@ -1,10 +1,7 @@
 import Customer from '../models/customer.model.js';
 import Dealer from '../models/dealer.model.js';
 import bcryptjs from 'bcryptjs';
-
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config();
+import jwt from 'jsonwebtoken'
 export const signup = async (req, res, next) => {
 
   const { username, email, password,address,isadmin,city,phone } = req.body;
@@ -12,13 +9,16 @@ export const signup = async (req, res, next) => {
 
     const hashedPassword = bcryptjs.hashSync(password, 10);
   
+    const validUser4 = await Customer.findOne({ phone });
+   
+    if (validUser4) return res.status(404).send('phone number exists!');
  
     const validUser = await Customer.findOne({ email });
-    const validUser2 = await Dealer.findOne({ email });
-    if (validUser || validUser2) return res.status(404).send('User exists!');
+   
+    if (validUser) return res.status(404).send('eamil exists!');
     const validUser1 = await Customer.findOne({ username });
-    const validUser3 = await Dealer.findOne({ username });
-    if (validUser1 || validUser3) return res.status(404).send('User exists!');
+  
+    if (validUser1 ) return res.status(404).send('User exists!');
     const newcust = new Customer({ username, email, password: hashedPassword,address,isadmin,city,phone });
   try {
     await newcust.save();
@@ -26,12 +26,7 @@ export const signup = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
- 
 
-  
- 
-
-  
 };
 
 export const signin = async (req, res, next) => {

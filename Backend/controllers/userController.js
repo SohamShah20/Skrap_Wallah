@@ -8,15 +8,26 @@ import bcryptjs from "bcryptjs";
 
 export const updateuser=async(req,res,next)=>{
   const {id}=req.params;
-    const { username, email, address,city,avatar,phone } = req.body;
+    const { username, email, address,city,avatar,phone,iscust } = req.body;
 
-const d=await Dealer.findById(id);
 
-if(d){
+
+if(!iscust){
+     
+  const u=await Dealer.findById(req.user.id);
+       const User = await Dealer.findOne({ phone });
    
+    if (User && User.phone!=u.phone) return res.status(404).send('phone number exists!');
+ 
+    const User1 = await Dealer.findOne({ email });
+   
+    if (User1 && User1.email!=u.email) return res.status(404).send('eamil exists!');
+    const User2 = await Dealer.findOne({ username });
+  
+    if (User2 && User2.username!=u.username ) return res.status(404).send('User exists!');
      
 Dealer.findByIdAndUpdate(id, {username, email, address,city,avatar,phone},{ new: true })
-                .then(u => res.status(200).json(u))
+                .then(u => { const { password: pass, ...rest } = u._doc;res.status(200).json(rest)})
                 .catch(err => res.send({Status: err}))
         
        
@@ -24,9 +35,20 @@ Dealer.findByIdAndUpdate(id, {username, email, address,city,avatar,phone},{ new:
 }
 
 else{
+     const u=await Customer.findById(req.user.id);
+       const User = await Customer.findOne({ phone });
+   
+    if (User && User.phone!=u.phone) return res.status(404).send('phone number exists!');
+ 
+    const User1 = await Customer.findOne({ email });
+   
+    if (User1 && User1.email!=u.email) return res.status(404).send('eamil exists!');
+    const User2 = await Customer.findOne({ username });
   
+    if (User2 && User2.username!=u.username ) return res.status(404).send('User exists!');
+     
       Customer.findByIdAndUpdate(id,{username, email, address,city,avatar,phone},{ new: true })
-        .then(u => res.status(200).json(u))
+        .then(u => { const { password: pass, ...rest } = u._doc;res.status(200).json(rest)})
         .catch(err => res.send({Status: err}))
     }
 
@@ -37,10 +59,10 @@ else{
 export const resetpass=async(req,res,next)=>{
   
     const {id} = req.params
-    const {newPassword} = req.body
-const d=await Dealer.findById(id);
+    const {newPassword,iscust} = req.body
 
-if(d){
+
+if(!iscust){
    
      
 bcryptjs.hash(newPassword, 10)

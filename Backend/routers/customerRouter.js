@@ -7,15 +7,16 @@ const router = express.Router();
 
 router.post('/request',verifyToken,request);
 router.put('/payreceived/:id',verifyToken,payreceived);
-router.get('/getrequests/:id',getrequests);
-router.get('/getdealer/:id',getdealer);
-router.get('/getacceptedrequests/:id',getacceptedrequests);
-router.get('/getclosedrequests/:id',getclosedrequests);
-router.get('/getbill/:id',getbill);  
+
+router.get('/getrequests',verifyToken,getrequests);
+router.get('/getdealer/:id',verifyToken,getdealer);
+router.get('/getacceptedrequests/:id',verifyToken,getacceptedrequests);
+router.get('/getclosedrequests/:id',verifyToken,getclosedrequests);
+router.get('/getbill/:id',verifyToken,getbill);  
 router.post('/feedback/:id',verifyToken, feedback);
 router.post('/updatereq/:id',verifyToken,updatereq);
 router.delete('/deletereq/:id',verifyToken, deletereq);
-router.get('/getscraps', getscraps);
-router.get('/getDealerFromRequest/:req_id', getDealerFromRequest);
+router.get('/getscraps',verifyToken, getscraps);
+router.get('/getDealerFromRequest/:req_id',verifyToken, getDealerFromRequest);
 
 export default router;

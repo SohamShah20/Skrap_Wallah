@@ -73,6 +73,7 @@ const SignupForm = () => {
               id="username"
               required
             minLength={4}
+            maxLength={15}
               placeholder="Enter your username"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-400 focus:outline-none transition duration-150"
               onChange={changeHandler}
@@ -112,6 +113,7 @@ const SignupForm = () => {
               name="password"
               id="password"
               minLength={4}
+              maxLength={15}
               required
               placeholder="Enter your password"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-400 focus:outline-none transition duration-150"
@@ -138,6 +140,8 @@ const SignupForm = () => {
               type="text"
               name="phone"
               id="phone"
+              maxLength={10}
+              minLength={10}
               required
               placeholder="Enter your contact no."
               className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-400 focus:outline-none transition duration-150"

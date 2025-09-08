@@ -14,12 +14,19 @@ const Viewrequests = () => {
     const [isDeleting, setIsDeleting] = useState(false);
 
     const navigate = useNavigate();
+   
 
     useEffect(() => {
+
         const fetchRequests = async () => {
             try {
                 setIsLoading(true);
-                const res = await fetch(`http://localhost:3001/api/customer/getrequests/${currentUser._id}`);
+                const res = await fetch(`http://localhost:3001/api/customer/getrequests`,
+                    {
+                        method:"GET",
+                        credentials:"include"
+                    }
+                );
                 const data = await res.json();
                 setRequests(data);
             } catch (error) {
@@ -35,7 +42,7 @@ const Viewrequests = () => {
         } else {
             setIsLoading(false);
         }
-    }, [currentUser]);
+    }, []);
 
     async function handleDelete(event, index) {
         const id = requests[index]._id;
@@ -59,6 +66,7 @@ const Viewrequests = () => {
                 window.location.reload();
                 return;
             }
+            setRequests((prevRequests) => prevRequests.filter((_, i) => i !== index));
 
             setMessage(data.message);
           
@@ -75,6 +83,7 @@ const Viewrequests = () => {
         } finally {
             setIsDeleting(false);
         }
+
     }
 
     return (

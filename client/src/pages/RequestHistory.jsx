@@ -16,7 +16,11 @@ const RequestHistory = (props) => {
     const fetchRequests = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3001/api/customer/getclosedrequests/${currentUser._id}`
+          `http://localhost:3001/api/customer/getclosedrequests/${currentUser._id}`,
+          {
+                        method:"GET",
+                        credentials:"include"
+                    }
         );
         const data = await res.json();
         setRequests(data);

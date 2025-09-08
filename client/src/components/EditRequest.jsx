@@ -19,7 +19,12 @@ const EditRequest = (props) => {
     useEffect(()=>{
       const fetchScraps = async () => {
         try{
-          const res = await fetch(`http://localhost:3001/api/customer/getscraps`);
+          const res = await fetch(`http://localhost:3001/api/customer/getscraps`,
+            {
+                        method:"GET",
+                        credentials:"include"
+                    }
+          );
           const data = await res.json();
           setScraps(data);
         }catch(error){
@@ -69,7 +74,15 @@ const EditRequest = (props) => {
       formData.city = currentUser.city;
       formData.custname = currentUser.username;
       formData.email = currentUser.email;
-  
+   
+ const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
+const now = new Date();
+
+if (selectedDateTime <= now) {
+  setMessage("Please select a future date and time.");
+  setIsLoading(false);
+  return;
+}
       try {
         const res = await fetch(`http://localhost:3001/api/customer/updatereq/${id}`, {
           method: 'POST',
@@ -122,6 +135,8 @@ const EditRequest = (props) => {
                 name="quantity"
                 value={scrap.quantity}
                 required
+                max={100}
+                min={1}
                 onChange={(event) => handleScrapChange(event, index)}
                 placeholder="Quantity"
                 className="border rounded-lg p-3 flex-1 focus:ring-2 focus:ring-blue-300 shadow-sm hover:shadow-md transition duration-200"
@@ -153,6 +168,7 @@ const EditRequest = (props) => {
             type="date"
             name="date"
             required
+           
             onChange={handleChange}
             className="border rounded-lg p-3 w-full mt-2 focus:ring-2 focus:ring-blue-300 shadow-sm hover:shadow-md transition duration-200"
           />

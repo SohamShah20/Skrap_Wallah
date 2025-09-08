@@ -3,7 +3,7 @@ import "./App.css";
 import data from "./data.js";
 import { useState } from "react";
 
-import { NavLink, Routes, Route, Link } from 'react-router-dom';
+import { NavLink, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import EditRequest from "./components/EditRequest.jsx";
 import Home from './pages/Home';
@@ -12,7 +12,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Logout from './pages/Logout';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Getrequests from './pages/Getrequests';
 import Createdealer from './components/createdealer';
 import RequestHistory from './pages/RequestHistory';
@@ -35,11 +35,46 @@ import Contact from "./pages/Contact.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import DealerList from "./pages/DealerList.jsx";
 import CheckRateList from "./pages/CheckRateList.jsx";
-
+import { useEffect } from "react";
+import { authcheck, signOutUserSuccess } from "./redux/user/userSlice.js";
 function App() {
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser, loading, error,iscust} = useSelector((state) => state.user);
   const [scraps, setScraps] = useState(data);
   const [dealer, setdealer] = useState(null);
+  const dispatch=useDispatch();
+  useEffect(()=>{
+    const check=async()=>{
+    try {
+      const res = await fetch(
+       'http://localhost:3001/api/checkauth', {
+        method: 'GET',
+       
+        credentials: 'include',
+       
+      });
+    
+ const data= await res.json();
+   
+      console.log(data.success===true);
+  
+    if(data.success=== false) {
+      dispatch(signOutUserSuccess());
+      console.log(currentUser);
+      return;
+    }
+      dispatch(authcheck(data));
+     console.log(currentUser);
+   } catch (error) {
+     console.log("Error in checkAuth:", error);
+     dispatch(signOutUserSuccess());
+   } 
+  };
+
+  check();
+
+ 
+}
+  ,[])
   return (
     <div>
 
@@ -47,31 +82,31 @@ function App() {
       <Routes>
         <Route path = "/" element = {currentUser? <Dashboard /> : <Home />} />
         <Route path = "/about" element = {<About/>} />
-        <Route path = "/login" element = {<Login/>} />
-        <Route path = "/signup" element = {<Signup />} />
+        <Route path = "/login" element = {!currentUser?<Login/>:<Dashboard/>} />
+        <Route path = "/signup" element = {!currentUser?<Signup/>:<Dashboard/>} />
         <Route path = "/logout" element = {<Logout />} />
-        <Route path = "/createdealer" element = {<Createdealer />} />
-        <Route path = "/getrequests" element = {<Getrequests />} />
-        <Route path = "/getacceptedrequests" element = {<Acceptedreq />} />
-        <Route path = "/gethistory" element = {<History />} />
-        <Route path = "/history" element = {<RequestHistory />} />
-        <Route path = "/request" element = {<Request />} />
-        <Route path = "/viewrequests" element = {<Viewrequests />} />
-        <Route path = "/viewacceptedrequests" element = {<Viewacceptedrequests/>} />
-        <Route path = "/viewdealer/:id" element = {<Viewdealer />} />
-        <Route path = "/viewbill/:req_id" element = {<Viewbill />} />
-        <Route path = "/setprice" element = {<SetPrice />} />
-        <Route path = "/editreq/:id" element = {<EditRequest />} />
+        <Route path = "/createdealer" element = {(currentUser && currentUser.isadmin)?<Createdealer />:<Navigate to="/"/>} />
+        <Route path = "/getrequests" element = {(currentUser && !iscust )?<Getrequests />:<Navigate to="/"/>} />
+        <Route path = "/getacceptedrequests" element = {(currentUser && !iscust )?<Acceptedreq />:<Navigate to="/"/>} />
+        <Route path = "/gethistory" element = {(currentUser )?<History />:<Home/>} />
+        <Route path = "/history" element = {(currentUser )?<RequestHistory />:<Home/>} />
+        <Route path = "/request" element = {(currentUser && iscust)?<Request />:<Navigate to="/"/>} />
+        <Route path = "/viewrequests" element = {(currentUser && iscust)?<Viewrequests />:<Navigate to="/"/>} />
+        <Route path = "/viewacceptedrequests" element = {(currentUser && iscust)?<Viewacceptedrequests/>:<Navigate to="/"/>} />
+        <Route path = "/viewdealer/:id" element = {(currentUser )?<Viewdealer />:<Navigate to="/"/>} />
+        <Route path = "/viewbill/:req_id" element = {(currentUser )?<Viewbill />:<Navigate to="/"/>} />
+        <Route path = "/setprice" element = {(currentUser && currentUser.isadmin)?<SetPrice />:<Navigate to="/"/>} />
+        <Route path = "/editreq/:id" element = {(currentUser && iscust)?<EditRequest />:<Navigate to="/"/>} />
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/reset_password/:id/:token" element={<ResetPassword />}></Route>
 
-        <Route path = "/givefeedback/:req_id" element = {<GiveFeedback />} />
-        <Route path = "/viewdealerfeedback" element = {<DealerFeedbacks />} />
+        <Route path = "/givefeedback/:req_id" element = {(currentUser && iscust)?<GiveFeedback />:<Navigate to="/"/>} />
+        <Route path = "/viewdealerfeedback" element = {(currentUser && !iscust )?<DealerFeedbacks />:<Navigate to="/"/>} />
                   <Route path="/contact" element={<Contact />} />
-        <Route path="/profilepage" element={<ProfilePage />} />
-        <Route path="/dealerlist" element={<DealerList />} />
+        <Route path="/profilepage" element={currentUser?<ProfilePage />:<Home/>} />
+        <Route path="/dealerlist" element={(currentUser && currentUser.isadmin)?<DealerList />:<Navigate to="/"/>} />
         <Route path = "*" element = {<NotFound />} />
-        <Route path = "/ratelist" element = {<CheckRateList />} />
+        <Route path = "/ratelist" element = {(currentUser && currentUser.isadmin)?<CheckRateList />:<Navigate to="/"/>} />
       </Routes>
     </div>
   );

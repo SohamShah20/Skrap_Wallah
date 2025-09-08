@@ -7,8 +7,8 @@ const Spinner = () => {
     {/* Image above the spinner */}
     <img src={logo} alt="Loading Logo" className="mb-4 w-24 h-24 md:w-32 md:h-32 rounded-full object-cover" />
      
-    <h1 className='text-white text-3xl mb-4'>S k R a P</h1>
-    <span className='text-white text-3xl ml-4 mb-7'> W a L L a H</span>
+    <h1 className='text-white text-2xl mb-4'>S K R A P</h1>
+    <span className='text-white text-3xl ml-4 mb-7'> W A L L A H</span>
 
     {/* Colorful spinner */}
     <BarLoader color="#84cc16" height={6} width={350} />

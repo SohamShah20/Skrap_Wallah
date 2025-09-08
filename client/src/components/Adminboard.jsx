@@ -2,7 +2,9 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setiscust } from '../redux/user/userSlice';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Scrapdealer from './Scrapdealer';
 const Adminboard = () => {
   const { currentUser, iscust } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -11,57 +13,64 @@ const Adminboard = () => {
   if (iscust) dispatch(setiscust(false));
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-100 via-white to-blue-200 py-8">
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="max-w-2xl w-full bg-white shadow-lg rounded-lg p-8">
-          
-          {/* Profile Image */}
-          {currentUser.profileImage && (
-            <img
-              src={currentUser.profileImage} // Admin's profile image
-              alt="Admin Profile"
-              className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-blue-500 transform hover:scale-110 transition-all duration-300"
-            />
-          )}
+    <div>
+      <ToastContainer />
+      
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-green-100 to-white p-6 md:p-10 flex flex-col items-center">
+        {/* Header */}
+       
+       
+        {/* Admin Features Section */}
+        <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 max-w-3xl w-full">
+          {/* Card Template for Admin Features */}
+          {[
+            {
+              to: "/createdealer",
+              title: "Create Scrap Dealer",
+              description: "Add a new scrap dealer to the system",
+              icon: "➕",
+            },
+            {
+              to: "/setprice",
+              title: "Set Scrap Prices",
+              description: "Set the price for various scrap types",
+              icon: "💲",
+            },
+          ].map((card, index) => (
+            <Link
+              key={index}
+              to={card.to}
+              className="flex items-center bg-white p-6 rounded-lg shadow-md transition transform hover:scale-105 duration-200 border border-gray-300 hover:border-green-600 hover:shadow-lg"
+            >
+              <div className="text-3xl md:text-4xl mr-4 text-green-600">{card.icon}</div>
+              <div>
+                <h2 className="text-lg md:text-xl font-semibold text-gray-800 hover:text-black">
+                  {card.title}
+                </h2>
+                <p className="text-gray-600 mt-1 hover:text-gray-800">
+                  {card.description}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
 
-          {/* Welcome Message */}
-          <h1 className="text-3xl font-semibold text-gray-700 text-center mb-6">
-            Welcome, {currentUser.username}!
-          </h1>
-          
-          {/* Admin Features Section */}
-          <div className="space-y-6">
-            
-            {/* Create Dealer Section */}
-            <div className="p-6 bg-white shadow-lg rounded-lg hover:shadow-2xl transition-shadow duration-300 text-center">
-              <p className="text-xl text-gray-600 font-medium mb-4">Create a Scrap Dealer</p>
-              <Link
-                to="/createdealer"
-                className="inline-block px-8 py-3 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-all duration-300"
-              >
-                Create Dealer
-              </Link>
-            </div>
-            
-            {/* Set Scrap Prices Section */}
-            <div className="p-6 bg-white shadow-lg rounded-lg hover:shadow-2xl transition-shadow duration-300 text-center">
-              <p className="text-xl text-gray-600 font-medium mb-4">Set Scrap Prices</p>
-              <Link
-                to="/setprice"
-                className="inline-block px-8 py-3 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-all duration-300"
-              >
-                Set Price
-              </Link>
-            </div>
-            <div className="p-6 bg-white shadow-lg rounded-lg hover:shadow-2xl transition-shadow duration-300 text-center">
-              <p className="text-xl text-gray-600 font-medium mb-4">View all dealers</p>
-              <Link to="/dealerlist"
-              className="inline-block px-8 py-3 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-all duration-300"
-              >
+        {/* "View Dealers" Card (Centered below the other two cards) */}
+        <div className="flex justify-center w-full mt-4">
+          <Link
+            to="/dealerlist"
+            className="flex items-center justify-center bg-white p-3 rounded-lg shadow-md transition transform hover:scale-105 duration-200 border border-gray-300 hover:border-green-600 hover:shadow-lg w-full max-w-3xl"
+          >
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="text-3xl md:text-4xl mb-4 text-green-600">👥</div>
+              <h2 className="text-lg md:text-xl font-semibold text-gray-800 hover:text-black">
                 View Dealers
-              </Link>
+              </h2>
+              <p className="text-gray-600 mt-2 hover:text-gray-800">
+                View all registered scrap dealers
+              </p>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
