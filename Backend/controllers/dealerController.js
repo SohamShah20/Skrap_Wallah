@@ -8,7 +8,7 @@ const id=req.user.id;
 const dealer= await Dealer.findById(id);
 if(!dealer)return res.status(400).json('you are not a dealer');
 try
-{const requests=await Request.find({status:"PENDING"});
+{const requests=await Request.find({status:"PENDING",city:dealer.city});
 return res.status(200).json(requests);}
 catch(error){
     return res.status(404).json(error);
