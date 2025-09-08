@@ -107,10 +107,10 @@ app.post('/forgot-password',async (req, res) => {
 
 app.post('/reset-password/:id/:token',async (req, res) => {
     const {id, token} = req.params
-    const {password} = req.body
+    const {password,isDealer} = req.body
 const d=await Dealer.findById(id);
 
-if(d){
+if(isDealer && d){
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if(err) {
             return res.json({Status: "Error with token"})
