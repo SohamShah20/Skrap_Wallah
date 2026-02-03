@@ -21,7 +21,7 @@ if(!iscust){
  
     const User1 = await Dealer.findOne({ email });
    
-    if (User1 && User1.email!=u.email) return res.status(404).send('eamil exists!');
+    if (User1 && User1.email!=u.email) return res.status(404).send('email exists!');
     const User2 = await Dealer.findOne({ username });
   
     if (User2 && User2.username!=u.username ) return res.status(404).send('User exists!');
@@ -42,7 +42,7 @@ else{
  
     const User1 = await Customer.findOne({ email });
    
-    if (User1 && User1.email!=u.email) return res.status(404).send('eamil exists!');
+    if (User1 && User1.email!=u.email) return res.status(404).send('email exists!');
     const User2 = await Customer.findOne({ username });
   
     if (User2 && User2.username!=u.username ) return res.status(404).send('User exists!');

@@ -9,7 +9,7 @@ export async function request(req,res,next){
    const city1=city.toUpperCase();
    const times=time.toString();
     const dates=date.toString();
-    const u=Customer.findById(req.user.id);
+    const u=await Customer.findById(req.user.id);
     if(!u)return res.status(400).json('you are not a customer!');
     const newreq = new Request({city:city1,custname,date:dates,time:times,email,scrapData});
     try {
